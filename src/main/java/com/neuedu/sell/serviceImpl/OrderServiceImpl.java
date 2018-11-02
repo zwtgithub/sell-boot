@@ -7,6 +7,7 @@ import com.neuedu.sell.dto.OrderDTO;
 import com.neuedu.sell.entity.OrderDetail;
 import com.neuedu.sell.entity.OrderMaster;
 import com.neuedu.sell.entity.ProductInfo;
+import com.neuedu.sell.enums.OrderStatusEnum;
 import com.neuedu.sell.enums.ResultEnum;
 import com.neuedu.sell.exception.SellException;
 import com.neuedu.sell.repository.OrderDetailRepository;
@@ -105,8 +106,26 @@ public class OrderServiceImpl implements OrderService {
      * @return
      */
     @Override
+    @Transactional
     public OrderDTO cancel(OrderDTO orderDTO) {
-        return null;
+        OrderMaster orderMaster=orderMasterRepository.findOne(orderDTO.getOrderId());
+        //1.判断订单状态
+        if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())){
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+         //2.修改订单状态
+        orderMaster.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        orderMasterRepository.save(orderMaster);
+        // 3.返还库存
+        List<CartDTO> cartDTOList=new ArrayList<>();
+
+        List<OrderDetail> orderDetailList=orderDetailRepository.findByOrderId(orderMaster.getOrderId());
+        for (OrderDetail orderDetail : orderDetailList) {
+            cartDTOList.add(new CartDTO(orderDetail.getProductId(),orderDetail.getProductQuantity()));
+        }
+        productInfoService.increaseStock(cartDTOList);
+         //4.如果已支付，退款
+        return orderDTO;
     }
 
     @Override

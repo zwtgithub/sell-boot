@@ -1,13 +1,13 @@
 package com.neuedu.sell.enums;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
 public enum OrderStatusEnum {
 
     NEW(0,"新下单"),
-    FINISH(1,"已完成");
+    FINISH(1,"已完成"),
+    CANCEL(2,"已取消");
     private Integer code;
     private String message;
 

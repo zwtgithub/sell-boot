@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +49,11 @@ public class OrderServiceImplTest {
         for (OrderDTO orderDTO : page.getContent()) {
             System.out.println(orderDTO);
         }
+    }
+    @Test
+    public void cancel(){
+        OrderDTO orderDTO=new OrderDTO();
+        orderDTO.setOrderId("1541074805983883854");
+        orderService.cancel(orderDTO);
     }
 }

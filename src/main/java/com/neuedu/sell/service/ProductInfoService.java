@@ -17,6 +17,8 @@ public interface ProductInfoService {
     Page<ProductInfo> findAll(Pageable pageable);
 
     ProductInfo save(ProductInfo productInfo);
-
+    //扣库存
     void decreaseStock(List<CartDTO> cartDTOList);
+    //增加库存
+    void increaseStock(List<CartDTO> cartDTOList);
 }

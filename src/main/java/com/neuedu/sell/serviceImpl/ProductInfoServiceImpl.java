@@ -58,8 +58,24 @@ public class ProductInfoServiceImpl implements ProductInfoService {
               if (cartDTO.getProductQuantity()>productInfo.getProductStock()){
                   throw new SellException(ResultEnum.STOCK_NOT_ENOUGH);
               }
-            System.out.println(productInfo.getProductStock()-cartDTO.getProductQuantity());
               productInfo.setProductStock(productInfo.getProductStock()-cartDTO.getProductQuantity());
+            productInfoRepository.save(productInfo);
+        }
+    }
+
+    @Override
+    public void increaseStock(List<CartDTO> cartDTOList) {
+        for (CartDTO cartDTO : cartDTOList) {
+            ProductInfo productInfo=productInfoRepository.findOne(cartDTO.getProductId());
+            //判断商品是否存在
+            if (productInfo==null){
+                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            }
+            //判断数量是否合法
+            if (cartDTO.getProductQuantity()<=0){
+                throw new SellException(ResultEnum.QUANTITY_NOT_LEGAL);
+            }
+            productInfo.setProductStock(productInfo.getProductStock()+cartDTO.getProductQuantity());
             productInfoRepository.save(productInfo);
         }
     }
