@@ -1,6 +1,7 @@
 package com.neuedu.sell.serviceImpl;
 
 import com.neuedu.sell.ResultVoUtils.KeyUtils;
+import com.neuedu.sell.converter.OrderMaster2OrderDTOConverter;
 import com.neuedu.sell.dto.CartDTO;
 import com.neuedu.sell.dto.OrderDTO;
 import com.neuedu.sell.entity.OrderDetail;
@@ -16,10 +17,10 @@ import com.neuedu.sell.service.ProductInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.plugin.com.Utils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -77,14 +78,32 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO findOne(String orderId) {
-        return null;
+        OrderMaster orderMaster=orderMasterRepository.findOne(orderId);
+        if (orderMaster==null){
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        List<OrderDetail> orderDetailList=orderDetailRepository.findByOrderId(orderId);
+        if (orderDetailList.size()==0){
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+        }
+        OrderDTO orderDTO=OrderMaster2OrderDTOConverter.convert(orderMaster);
+        orderDTO.setOrderDetails(orderDetailList);
+        return orderDTO;
     }
 
     @Override
     public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
-        return null;
+        Page<OrderMaster> masterPage=orderMasterRepository.findByBuyerOpenid(buyerOpenid,pageable);
+       List<OrderDTO> orderDTOList=OrderMaster2OrderDTOConverter.convert(masterPage.getContent());
+
+        return new PageImpl<>(orderDTOList,pageable,masterPage.getTotalElements());
     }
 
+    /**
+     * 取消订单
+     * @param orderDTO
+     * @return
+     */
     @Override
     public OrderDTO cancel(OrderDTO orderDTO) {
         return null;
