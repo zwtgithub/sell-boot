@@ -27,20 +27,20 @@ public class OrderServiceImplTest {
     @Test
     public void createTest(){
         OrderDTO orderDTO=new OrderDTO();
-        orderDTO.setBuyerName("张三");
-        orderDTO.setBuyerPhone("17415236548");
-        orderDTO.setBuyerAddress("西七道");
-        orderDTO.setBuyerOpenid("abc123");
+        orderDTO.setBuyerName("李四");
+        orderDTO.setBuyerPhone("18415236549");
+        orderDTO.setBuyerAddress("西八道");
+        orderDTO.setBuyerOpenid("abc456");
         List<OrderDetail> orderDetailList=new ArrayList<>();
-        orderDetailList.add(new OrderDetail("1",10));
-        orderDetailList.add(new OrderDetail("123456",2));
+        orderDetailList.add(new OrderDetail("1",8));
+        orderDetailList.add(new OrderDetail("123456",4));
         orderDTO.setOrderDetails(orderDetailList);
         orderService.create(orderDTO);
     }
 
     @Test
     public void findOne(){
-        OrderDTO orderDTO=orderService.findOne("1541074805983883854");
+        OrderDTO orderDTO=orderService.findOne("1541225661802152455");
         System.out.println(orderDTO);
     }
     @Test
@@ -55,5 +55,17 @@ public class OrderServiceImplTest {
         OrderDTO orderDTO=new OrderDTO();
         orderDTO.setOrderId("1541074805983883854");
         orderService.cancel(orderDTO);
+    }
+    @Test
+    public void finish(){
+        OrderDTO orderDTO=new OrderDTO();
+        orderDTO.setOrderId("1541074805983883854");
+        orderService.finish(orderDTO);
+    }
+    @Test
+    public void paidTest(){
+        OrderDTO orderDTO=new OrderDTO();
+        orderDTO.setOrderId("1541074805983883854");
+        orderService.paid(orderDTO);
     }
 }

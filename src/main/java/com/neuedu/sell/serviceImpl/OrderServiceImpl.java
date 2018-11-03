@@ -8,6 +8,7 @@ import com.neuedu.sell.entity.OrderDetail;
 import com.neuedu.sell.entity.OrderMaster;
 import com.neuedu.sell.entity.ProductInfo;
 import com.neuedu.sell.enums.OrderStatusEnum;
+import com.neuedu.sell.enums.PayStatusEnum;
 import com.neuedu.sell.enums.ResultEnum;
 import com.neuedu.sell.exception.SellException;
 import com.neuedu.sell.repository.OrderDetailRepository;
@@ -64,8 +65,8 @@ public class OrderServiceImpl implements OrderService {
         }
         // 订单主表入库
         OrderMaster orderMaster=new OrderMaster();
+        orderDTO.setOrderId(orderId);
         BeanUtils.copyProperties(orderDTO,orderMaster);
-        orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(orderAccount);
         orderMasterRepository.save(orderMaster);
         //扣库存
@@ -125,16 +126,29 @@ public class OrderServiceImpl implements OrderService {
         }
         productInfoService.increaseStock(cartDTOList);
          //4.如果已支付，退款
+        orderDTO.setBuyerOpenid(orderMaster.getBuyerOpenid());
         return orderDTO;
     }
 
     @Override
     public OrderDTO finish(OrderDTO orderDTO) {
-        return null;
+        OrderMaster orderMaster=orderMasterRepository.findOne(orderDTO.getOrderId());
+        if (!orderMaster.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())){
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        orderMaster.setOrderStatus(OrderStatusEnum.FINISH.getCode());
+        orderMasterRepository.save(orderMaster);
+        return orderDTO;
     }
 
     @Override
     public OrderDTO paid(OrderDTO orderDTO) {
-        return null;
+        OrderMaster orderMaster=orderMasterRepository.findOne(orderDTO.getOrderId());
+        if (orderMaster.getPayStatus().equals(PayStatusEnum.PAID.getCode())){
+            throw new SellException(ResultEnum.PAY_STATUS_ERROR);
+        }
+        orderMaster.setPayStatus(PayStatusEnum.PAID.getCode());
+        orderMasterRepository.save(orderMaster);
+        return orderDTO;
     }
 }
