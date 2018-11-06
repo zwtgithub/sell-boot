@@ -1,4 +1,4 @@
-package com.neuedu.sell.ResultVoUtils;
+package com.neuedu.sell.Utils;
 
 import java.util.Random;
 

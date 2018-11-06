@@ -1,6 +1,7 @@
 package com.neuedu.sell.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.neuedu.sell.Utils.EnumUtil;
 import com.neuedu.sell.entity.OrderDetail;
 import com.neuedu.sell.enums.OrderStatusEnum;
 import com.neuedu.sell.enums.PayStatusEnum;
@@ -28,4 +29,12 @@ public class OrderDTO {
     private Date updateTime;
     /* 订单详情集合 */
     private List<OrderDetail> orderDetails;
+
+    public OrderStatusEnum getOrderStatusEnum(){
+        return EnumUtil.getEnumByCode(orderStatus,OrderStatusEnum.class);
+    }
+    public PayStatusEnum getPayStatusEnum(){
+        return EnumUtil.getEnumByCode(payStatus,PayStatusEnum.class);
+    }
+
 }

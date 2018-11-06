@@ -1,9 +1,8 @@
 package com.neuedu.sell.controller;
 
-import com.neuedu.sell.ResultVoUtils.ResultVoUtils;
+import com.neuedu.sell.Utils.ResultVoUtils;
 import com.neuedu.sell.entity.ProductCategory;
 import com.neuedu.sell.entity.ProductInfo;
-import com.neuedu.sell.repository.ProductInfoRepository;
 import com.neuedu.sell.service.ProductCategoryService;
 import com.neuedu.sell.service.ProductInfoService;
 import com.neuedu.sell.vo.ProductCategoryVo;
@@ -11,10 +10,8 @@ import com.neuedu.sell.vo.ProductInfoVo;
 import com.neuedu.sell.vo.ResultVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
