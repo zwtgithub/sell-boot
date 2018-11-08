@@ -27,12 +27,12 @@ public class OrderServiceImplTest {
     @Test
     public void createTest(){
         OrderDTO orderDTO=new OrderDTO();
-        orderDTO.setBuyerName("李四");
+        orderDTO.setBuyerName("马六");
         orderDTO.setBuyerPhone("18415236549");
         orderDTO.setBuyerAddress("西八道");
         orderDTO.setBuyerOpenid("abc456");
         List<OrderDetail> orderDetailList=new ArrayList<>();
-        orderDetailList.add(new OrderDetail("1",8));
+        orderDetailList.add(new OrderDetail("1",5));
         orderDetailList.add(new OrderDetail("123456",4));
         orderDTO.setOrderDetails(orderDetailList);
         orderService.create(orderDTO);

@@ -1,6 +1,6 @@
 package com.neuedu.sell.controller;
 
-import com.neuedu.sell.ResultVoUtils.ResultVoUtils;
+import com.neuedu.sell.Utils.ResultVoUtils;
 import com.neuedu.sell.converter.OrderForm2OrderDTOConverter;
 import com.neuedu.sell.dto.OrderDTO;
 import com.neuedu.sell.enums.ResultEnum;
@@ -53,7 +53,6 @@ public class BuyerOrderController {
         if (StringUtils.isEmpty(openid)) {
             throw new SellException(ResultEnum.PARAM_ERROR);
         }
-        System.out.println(77777777);
         Pageable pageable=new PageRequest(page,size);
         Page<OrderDTO> orderDTOPage= orderService.findList(openid,pageable);
         ResultVo resultVo=ResultVoUtils.success(orderDTOPage.getContent());
